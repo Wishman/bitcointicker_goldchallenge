@@ -29,6 +29,7 @@ const List<String> cryptoList = [
   'BTC',
   'ETH',
   'LTC',
+  'BCH',
 ];
 
 const bitcoinAverageURL = 'https://apiv2.bitcoinaverage.com/indices/global/ticker';

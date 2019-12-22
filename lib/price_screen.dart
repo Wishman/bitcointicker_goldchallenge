@@ -77,8 +77,24 @@ class _PriceScreenState extends State<PriceScreen> {
     getData();
   }
 
-  //TODO: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
-
+  //BONUS: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
+  // dynamic creation of widgets!!!
+  Column createCards() {
+    List<CryptoCard> cryptoCards = [];
+    for (String crypto in cryptoList) {
+      cryptoCards.add(
+        CryptoCard(
+          cryptoCurrency: crypto,
+          value: isWaiting ? '?' : coinValues[crypto],
+          selectedCurrency: selectedCurrency,
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: cryptoCards,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,23 +108,7 @@ class _PriceScreenState extends State<PriceScreen> {
         children: <Widget>[
           //Step 3: You'll need to use a Column Widget to contain the three CryptoCards.
           //Step 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint:You'll need a ternary operator.
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              CryptoCard(
-                  cryptoCurrency: 'BTC',
-                  value: isWaiting ? '?' : coinValues['BTC'],
-                  selectedCurrency: selectedCurrency),
-              CryptoCard(
-                  cryptoCurrency: 'ETH',
-                  value: isWaiting ? '?' : coinValues['ETH'],
-                  selectedCurrency: selectedCurrency),
-              CryptoCard(
-                  cryptoCurrency: 'LTC',
-                  value: isWaiting ? '?' : coinValues['LTC'],
-                  selectedCurrency: selectedCurrency),
-            ],
-          ),
+          createCards(), // <-- BONUS
           Container(
             height: 150.0,
             alignment: Alignment.center,

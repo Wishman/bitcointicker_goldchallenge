@@ -5,3 +5,5 @@ Step 4: Use a for loop here to loop through the cryptoList and request the data 
 Step 5: Return a Map of the results instead of a single value.
 Step 6: Update this method (getData) to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
 Step 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint:You'll need a ternary operator.
+
+//BONUS: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
