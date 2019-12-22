@@ -52,16 +52,19 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  String value = '?';
+  //String value = '?'; // obsolete
+  Map<String, String> coinValues = {}; // map to store received values
+  bool isWaiting = false;
 
-  //TODO 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint: You'll need a ternary operator.
-
-  //TODO 6: Update this method to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
+  //Step 6: Update this method to receive a Map containing the crypto:price key value pairs. Then use that map to update
+  // the CryptoCards.
   void getData() async {
+    isWaiting = true;
     try {
-      double data = await CoinData().getCoinData(selectedCurrency);
+      Map<String, String> data = await CoinData().getCoinData(selectedCurrency);
+      isWaiting = false;
       setState(() {
-        value = data.toStringAsFixed(0);
+        coinValues = data;
       });
     } catch (e) {
       print(e);
@@ -76,6 +79,7 @@ class _PriceScreenState extends State<PriceScreen> {
 
   //TODO: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,29 +90,24 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          //TODO 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
-          //TODO 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
-          //TODO 3: You'll need to use a Column Widget to contain the three CryptoCards.
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = $value $selectedCurrency',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+          //Step 3: You'll need to use a Column Widget to contain the three CryptoCards.
+          //Step 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint:You'll need a ternary operator.
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              CryptoCard(
+                  cryptoCurrency: 'BTC',
+                  value: isWaiting ? '?' : coinValues['BTC'],
+                  selectedCurrency: selectedCurrency),
+              CryptoCard(
+                  cryptoCurrency: 'ETH',
+                  value: isWaiting ? '?' : coinValues['ETH'],
+                  selectedCurrency: selectedCurrency),
+              CryptoCard(
+                  cryptoCurrency: 'LTC',
+                  value: isWaiting ? '?' : coinValues['LTC'],
+                  selectedCurrency: selectedCurrency),
+            ],
           ),
           Container(
             height: 150.0,
@@ -118,6 +117,47 @@ class _PriceScreenState extends State<PriceScreen> {
             child: Platform.isIOS ? iOSPicker() : androidDropdown(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+//Step 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them,
+// one for each cryptocurrency.
+class CryptoCard extends StatelessWidget {
+  //Step2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this
+  // CryptoCard Widget.
+  const CryptoCard({
+    this.value,
+    this.selectedCurrency,
+    this.cryptoCurrency, // add this
+  });
+
+  final String value;
+  final String selectedCurrency;
+  final String cryptoCurrency; // add this
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            '1 $cryptoCurrency = $value $selectedCurrency', // replace BTC with $cryptoCurrency
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }

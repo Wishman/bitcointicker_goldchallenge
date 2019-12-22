@@ -1,0 +1,7 @@
+Step 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
+Step 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
+Step 3: You'll need to use a Column Widget to contain the three CryptoCards.
+Step 4: Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
+Step 5: Return a Map of the results instead of a single value.
+Step 6: Update this method (getData) to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
+Step 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint:You'll need a ternary operator.
